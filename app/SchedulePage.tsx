@@ -105,6 +105,7 @@ const speakerWebsites: Record<string, string> = {
   "George Konidaris": "https://cs.brown.edu/people/gdk/", "Katia Sycara": "https://www.ri.cmu.edu/ri-faculty/katia-sycara/",
   "Sarath Chandar": "https://sarathchandar.in/", "David Abel": "https://david-abel.github.io/", "Peter Stone": "https://www.cs.utexas.edu/~pstone/",
   "Richard S. Sutton": "http://incompleteideas.net/", "A. Rupam Mahmood": "https://armahmood.github.io/", "Harry Zhao": "https://pwnerharry.github.io/",
+  "Adam White": "https://adamwhite.ca/",
   "Scott Fujimoto": "https://scholar.google.com/citations?user=RiY8DgYAAAAJ", "Danijar Hafner": "https://danijar.com/", "Amir Zadeh": "https://scholar.google.com/citations?user=2fLaB6QAAAAJ",
   "Doina Precup": "https://doinaprecup.github.io/", "Cyrus Neary": "https://cyrusneary.com/", "Kevin Murphy": "https://www.cs.ubc.ca/~murphyk/",
   "Sorina Lupu": "https://scholar.google.com/citations?user=4R3hR3QAAAAJ", "Mohamed Elsayed": "https://scholar.google.com/citations?user=JmLJ9R0AAAAJ",
