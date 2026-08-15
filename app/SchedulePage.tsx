@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-type Session = { title: string; speakers?: string; details?: string[]; tldr?: string[]; conversation?: string[]; url?: string; kind?: "talk" | "break" | "poster" | "panel" | "pending" };
+type Session = { title: string; speakers?: string; details?: string[]; tldr?: string[]; conversation?: string[]; notesUrl?: string; url?: string; kind?: "talk" | "break" | "poster" | "panel" | "pending" };
 type Workshop = { id: string; short: string; name: string; room: string; color: string; url: string };
 
 const workshops: Workshop[] = [
@@ -76,6 +76,7 @@ const agenda: Record<string, Record<string, Session[]>> = {
       title: "Panel discussion",
       speakers: "Richard S. Sutton · Katia Sycara · Doina Precup · George Konidaris · Adam White",
       kind: "panel",
+      notesUrl: "/notes/continual-rl-panel",
       tldr: [
         "In-context learning is a weak, simplified form of continual learning: prompt updates and retrieval provide short-term, non-parametric adaptation, not deeper memory integration.",
         "LLM progress has come largely from scale, data, and engineering rather than solving continual learning; pretraining may saturate while agents still need to stay current.",
@@ -193,7 +194,7 @@ export default function SchedulePage({ initialDay }: { initialDay: string }) {
       {visible.map(w => <th key={w.id} style={{ "--accent": w.color } as React.CSSProperties}><a href={w.url} target="_blank" rel="noreferrer"><span className="workshop-name">{w.short}</span><span className="room">Room {w.room}</span></a></th>)}
     </tr></thead><tbody>{currentTimes.map(time => <tr key={time}>
       <th className="time-cell">{time}<small>{Number(time.split(":")[0]) < 8 ? "PM" : "AM"}</small></th>
-      {visible.map(w => <td key={w.id}>{(currentAgenda[time]?.[w.id] || []).map((s, i) => <article key={i} className={`session ${s.kind || "talk"}`}><strong><a className="source-link" href={s.url || w.url} target="_blank" rel="noreferrer" aria-label={`${s.title} — open original schedule`}>{s.title}<i aria-hidden="true">↗</i></a></strong>{s.details && <div className="talk-details">{s.details.map(detail => <p key={detail}>{detail}</p>)}</div>}{s.speakers && <SpeakerNames text={s.speakers} />}{s.tldr && <section className="panel-notes"><h4>TL;DR</h4><ul>{s.tldr.map(item => <li key={item}>{item}</li>)}</ul>{s.conversation && <details><summary>Actual conversation</summary>{s.conversation.map(item => <p key={item}>{item}</p>)}</details>}</section>}</article>)}</td>)}
+      {visible.map(w => <td key={w.id}>{(currentAgenda[time]?.[w.id] || []).map((s, i) => <article key={i} className={`session ${s.kind || "talk"}`}><strong><a className="source-link" href={s.url || w.url} target="_blank" rel="noreferrer" aria-label={`${s.title} — open original schedule`}>{s.title}<i aria-hidden="true">↗</i></a></strong>{s.details && <div className="talk-details">{s.details.map(detail => <p key={detail}>{detail}</p>)}</div>}{s.speakers && <SpeakerNames text={s.speakers} />}{s.notesUrl && <a className="panel-read" href={s.notesUrl}>Read TL;DR & transcript →</a>}</article>)}</td>)}
     </tr>)}</tbody></table></div>
     <footer><span>Agenda details are compiled from workshop organizers’ published pages and may change.</span><span>Last checked · Aug 15, 2026</span></footer>
   </main>;
