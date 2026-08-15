@@ -33,6 +33,13 @@
 .talk-details { margin-top: 8px; color: #747e79; }
 .talk-details p { margin: 0 0 8px; font-size: 10px; line-height: 1.4; font-weight: 400; }
 .talk-details p:last-child { margin-bottom: 0; }
+.panel-notes { margin-top: 12px; padding-top: 10px; border-top: 1px solid #d9d0df; }
+.panel-notes h4 { margin: 0 0 7px; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+.panel-notes ul { margin: 0; padding-left: 16px; color: #69736e; }
+.panel-notes li { margin-bottom: 6px; font-size: 9.5px; line-height: 1.4; font-weight: 400; }
+.panel-notes details { margin-top: 10px; color: #69736e; }
+.panel-notes summary { cursor: pointer; color: #563d60; font-size: 10px; font-weight: 800; }
+.panel-notes details p { margin: 8px 0 0; font-size: 9.5px; line-height: 1.45; font-weight: 400; }
 @media (max-width: 760px) {
   .day-tabs { margin-top: 0; }
   .day-tabs a { min-width: 116px; }

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-type Session = { title: string; speakers?: string; details?: string[]; url?: string; kind?: "talk" | "break" | "poster" | "panel" | "pending" };
+type Session = { title: string; speakers?: string; details?: string[]; tldr?: string[]; conversation?: string[]; url?: string; kind?: "talk" | "break" | "poster" | "panel" | "pending" };
 type Workshop = { id: string; short: string; name: string; room: string; color: string; url: string };
 
 const workshops: Workshop[] = [
@@ -72,7 +72,25 @@ const agenda: Record<string, Record<string, Session[]>> = {
     frame: [{ title: "Contributed oral presentations", speakers: "Esraa Elelimy · Banafsheh Rafiee · Fernando Rosas · Roy Fox" }],
   },
   "3:00": {
-    crl: [{ title: "Panel discussion", speakers: "Richard S. Sutton · Katia Sycara · Doina Precup · George Konidaris · Adam White", kind: "panel" }],
+    crl: [{
+      title: "Panel discussion",
+      speakers: "Richard S. Sutton · Katia Sycara · Doina Precup · George Konidaris · Adam White",
+      kind: "panel",
+      tldr: [
+        "In-context learning is a weak, simplified form of continual learning: prompt updates and retrieval provide short-term, non-parametric adaptation, not deeper memory integration.",
+        "LLM progress has come largely from scale, data, and engineering rather than solving continual learning; pretraining may saturate while agents still need to stay current.",
+        "Research engineers remain central to LLM training by managing data mixtures, diagnosing stalled performance, and sourcing additional data.",
+        "Data curation and mixture quality strongly shape model behavior; new information must be integrated meaningfully rather than simply appended.",
+        "Ongoing adaptation may be necessary for aligned, useful agents. A model that cannot learn from mistakes may itself create safety risks.",
+      ],
+      conversation: [
+        "So first of all, LLMs do some kind of very, very simplified learning. If you think of in-context adaptation: you talk to it, give it a prompt, and it puts all of that stuff in context. Then you say something more, and it may retrieve documents and put those in context. That context is changing all the time. It is not parametric; it is short-term, limited memory. It is a very weak kind of continual learning.",
+        "Because it is so weak, people patch it with harnesses. The harness turns the model into an agent and remembers things: an interesting lemma, a program it wrote, or other material stored in a file system for later retrieval. That is a form of continual learning using external memory, but it is simplified and hard for agents to manage. Even with the right information, they may not retrieve it.",
+        "If you think about the basis of training LLMs, you could argue that they are continued by research engineers. You need a data mixture and smart research engineers to determine what data is needed. If a curve is not rising the same way, they source more data. Many very smart people work on that.",
+        "The agent could potentially do this itself, gathering the data it needs. There is a false idea that preventing adaptation is necessarily safer because an agent might receive bad data and become poisoned. But agents already do bad things—not because they are malicious, but because they cannot fix themselves and lack the right understanding of the world. They interact with fixed datasets and limited training tasks.",
+        "Continual learning is fundamental to making these systems better aligned with our needs and goals, and to helping them develop a better understanding of the world.",
+      ],
+    }],
     big: [{ title: "Coffee break", kind: "break" }], auto: [{ title: "Coffee break", kind: "break" }],
   },
   "3:30": {
@@ -175,7 +193,7 @@ export default function SchedulePage({ initialDay }: { initialDay: string }) {
       {visible.map(w => <th key={w.id} style={{ "--accent": w.color } as React.CSSProperties}><a href={w.url} target="_blank" rel="noreferrer"><span className="workshop-name">{w.short}</span><span className="room">Room {w.room}</span></a></th>)}
     </tr></thead><tbody>{currentTimes.map(time => <tr key={time}>
       <th className="time-cell">{time}<small>{Number(time.split(":")[0]) < 8 ? "PM" : "AM"}</small></th>
-      {visible.map(w => <td key={w.id}>{(currentAgenda[time]?.[w.id] || []).map((s, i) => <article key={i} className={`session ${s.kind || "talk"}`}><strong><a className="source-link" href={s.url || w.url} target="_blank" rel="noreferrer" aria-label={`${s.title} — open original schedule`}>{s.title}<i aria-hidden="true">↗</i></a></strong>{s.details && <div className="talk-details">{s.details.map(detail => <p key={detail}>{detail}</p>)}</div>}{s.speakers && <SpeakerNames text={s.speakers} />}</article>)}</td>)}
+      {visible.map(w => <td key={w.id}>{(currentAgenda[time]?.[w.id] || []).map((s, i) => <article key={i} className={`session ${s.kind || "talk"}`}><strong><a className="source-link" href={s.url || w.url} target="_blank" rel="noreferrer" aria-label={`${s.title} — open original schedule`}>{s.title}<i aria-hidden="true">↗</i></a></strong>{s.details && <div className="talk-details">{s.details.map(detail => <p key={detail}>{detail}</p>)}</div>}{s.speakers && <SpeakerNames text={s.speakers} />}{s.tldr && <section className="panel-notes"><h4>TL;DR</h4><ul>{s.tldr.map(item => <li key={item}>{item}</li>)}</ul>{s.conversation && <details><summary>Actual conversation</summary>{s.conversation.map(item => <p key={item}>{item}</p>)}</details>}</section>}</article>)}</td>)}
     </tr>)}</tbody></table></div>
     <footer><span>Agenda details are compiled from workshop organizers’ published pages and may change.</span><span>Last checked · Aug 15, 2026</span></footer>
   </main>;
