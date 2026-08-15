@@ -101,6 +101,25 @@ const conferenceColumns: Workshop[] = [
 const paperSession = (date: string, track: number, time: string) =>
   `https://rl-conference.cc/paper_schedule.html?session=${encodeURIComponent(`${date}|${track}|${time}`)}`;
 
+const speakerWebsites: Record<string, string> = {
+  "George Konidaris": "https://cs.brown.edu/people/gdk/", "Katia Sycara": "https://www.ri.cmu.edu/ri-faculty/katia-sycara/",
+  "Sarath Chandar": "https://sarathchandar.in/", "David Abel": "https://david-abel.github.io/", "Peter Stone": "https://www.cs.utexas.edu/~pstone/",
+  "Richard S. Sutton": "http://incompleteideas.net/", "A. Rupam Mahmood": "https://armahmood.github.io/", "Harry Zhao": "https://pwnerharry.github.io/",
+  "Scott Fujimoto": "https://scholar.google.com/citations?user=RiY8DgYAAAAJ", "Danijar Hafner": "https://danijar.com/", "Amir Zadeh": "https://scholar.google.com/citations?user=2fLaB6QAAAAJ",
+  "Doina Precup": "https://doinaprecup.github.io/", "Cyrus Neary": "https://cyrusneary.com/", "Kevin Murphy": "https://www.cs.ubc.ca/~murphyk/",
+  "Sorina Lupu": "https://scholar.google.com/citations?user=4R3hR3QAAAAJ", "Mohamed Elsayed": "https://scholar.google.com/citations?user=JmLJ9R0AAAAJ",
+  "Martha White": "https://webdocs.cs.ualberta.ca/~whitem/", "John Carmack": "https://en.wikipedia.org/wiki/John_Carmack",
+  "Özgür Şimşek": "https://scholar.google.com/citations?user=t2vGSWIAAAAJ", "Serena Booth": "https://serenabooth.com/", "Sara Aronowitz": "https://www.saraaronowitz.com/",
+  "Joel Lehman": "https://www.joellehman.com/", "Dylan Brenneis": "https://dylanbrenneis.ca/", "Clare Lyle": "https://clarelyle.com/",
+  "Junhyuk Oh": "https://junhyuk.com/", "Théo Vincent": "https://www.ias.informatik.tu-darmstadt.de/Team/TheoVincent", "Antonin Raffin": "https://araffin.github.io/",
+  "Marc Bellemare": "https://www.marcgbellemare.info/", "Sheila McIlraith": "https://www.cs.toronto.edu/~sheila/", "Rika Antonova": "https://rikaantonova.com/",
+  "Balaraman Ravindran": "https://ravindran.org/"
+};
+
+function SpeakerNames({ text }: { text: string }) {
+  return <span className="speaker-list">{text.split(/\s*[·,]\s*/).map((name, i) => <span className="speaker-name" key={`${name}-${i}`}><span>{name}</span>{speakerWebsites[name] && <a href={speakerWebsites[name]} target="_blank" rel="noreferrer">Website ↗</a>}</span>)}</span>;
+}
+
 const dayData: Record<string, { label: string; date: string; times: string[]; agenda: Record<string, Record<string, Session[]>> }> = {
   sunday: { label: "Sunday", date: "August 16", times: ["9:15", "9:30", "10:30", "11:00", "12:00", "1:00", "2:30", "4:00", "6:00"], agenda: {
     "9:15": { main: [{ title: "Opening comments" }] }, "9:30": { main: [{ title: "Keynote", speakers: "Marc Bellemare" }] },
@@ -155,7 +174,7 @@ export default function SchedulePage({ initialDay }: { initialDay: string }) {
       {visible.map(w => <th key={w.id} style={{ "--accent": w.color } as React.CSSProperties}><a href={w.url} target="_blank" rel="noreferrer"><span className="workshop-name">{w.short}</span><span className="room">Room {w.room}</span></a></th>)}
     </tr></thead><tbody>{currentTimes.map(time => <tr key={time}>
       <th className="time-cell">{time}<small>{Number(time.split(":")[0]) < 8 ? "PM" : "AM"}</small></th>
-      {visible.map(w => <td key={w.id}>{(currentAgenda[time]?.[w.id] || []).map((s, i) => <a key={i} className="session-link" href={s.url || w.url} target="_blank" rel="noreferrer" aria-label={`${s.title} — open original schedule`}><article className={`session ${s.kind || "talk"}`}><strong>{s.title}<i aria-hidden="true">↗</i></strong>{s.speakers && <span>{s.speakers}</span>}</article></a>)}</td>)}
+      {visible.map(w => <td key={w.id}>{(currentAgenda[time]?.[w.id] || []).map((s, i) => <article key={i} className={`session ${s.kind || "talk"}`}><strong><a className="source-link" href={s.url || w.url} target="_blank" rel="noreferrer" aria-label={`${s.title} — open original schedule`}>{s.title}<i aria-hidden="true">↗</i></a></strong>{s.speakers && <SpeakerNames text={s.speakers} />}</article>)}</td>)}
     </tr>)}</tbody></table></div>
     <footer><span>Agenda details are compiled from workshop organizers’ published pages and may change.</span><span>Last checked · Aug 15, 2026</span></footer>
   </main>;

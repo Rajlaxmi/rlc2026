@@ -21,12 +21,15 @@
 .day-tabs span { font-size: 10px; color: #79827d; margin-top: 3px; text-transform: uppercase; letter-spacing: .08em; }
 .day-tabs a.selected { background: #22352d; border-color: #22352d; color: #fff; }
 .day-tabs a.selected span { color: #bfcac4; }
-.session-link { display: block; color: inherit; text-decoration: none; border-radius: 7px; }
-.session-link .session { transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease; }
-.session-link:hover .session { transform: translateY(-1px); box-shadow: 0 5px 14px #263b3217; }
-.session-link:focus-visible { outline: 3px solid #17231e; outline-offset: 2px; }
-.session strong { display: flex; justify-content: space-between; gap: 8px; }
+.session { transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease; }
+.source-link { display: flex; justify-content: space-between; gap: 8px; color: inherit; text-decoration: none; }
+.source-link:hover { text-decoration: underline; text-underline-offset: 2px; }
+.source-link:focus-visible, .speaker-name a:focus-visible { outline: 2px solid #17231e; outline-offset: 2px; border-radius: 2px; }
 .session strong i { font-style: normal; font-size: 10px; color: #7b8680; opacity: .72; }
+.speaker-list { display: grid !important; gap: 5px; }
+.speaker-name { display: block !important; margin: 0 !important; }
+.speaker-name > span { display: block; color: #52605a; }
+.speaker-name a { display: inline-block; margin-top: 2px; color: #376d58; font-size: 9px; font-weight: 800; text-decoration: underline; text-underline-offset: 2px; }
 @media (max-width: 760px) {
   .day-tabs { margin-top: 0; }
   .day-tabs a { min-width: 116px; }
