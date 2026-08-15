@@ -38,7 +38,12 @@ const agenda: Record<string, Record<string, Session[]>> = {
     big: [{ title: "Posters + coffee", kind: "poster" }], frame: [{ title: "Coffee break", kind: "break" }], auto: [{ title: "Coffee break", kind: "break" }],
   },
   "10:30": {
-    crl: [{ title: "Contributed talks 1–4", speakers: "Lu Li · Purab Seth · AmirHossein Naghdi · Luc McCutcheon" }],
+    crl: [
+      { title: "1. The Three Regimes of Offline-to-Online Reinforcement Learning", speakers: "Lu Li, Tianwei Ni, Yihao Sun, Pierre-Luc Bacon" },
+      { title: "2. Task diversity produces systematic transfer but inhibits continual reinforcement learning", speakers: "Purab Seth, Neil Shah, Kunal Jha, Samuel J. Gershman, Max Kleiman-Weiner, Wilka Carvalho" },
+      { title: "3. Flow-Corrected Thompson Sampling for Non-Stationary Contextual Bandits", speakers: "AmirHossein Naghdi, Ali Baheri" },
+      { title: "4. Calibrated Partial Resets: Preventing Policy Collapse in Continual Reinforcement Learning", speakers: "Luc McCutcheon, Evangelos Chatzaroulas, Saber Fallah" },
+    ],
     wm: [{ title: "Invited talk", speakers: "Danijar Hafner" }],
     big: [{ title: "Lightning talk: RL on Robots", speakers: "Sorina Lupu" }],
     frame: [{ title: "Panel with invited speakers", speakers: "Özgür Şimşek · Serena Booth · Sara Aronowitz · Joel Lehman", kind: "panel" }],
@@ -60,7 +65,10 @@ const agenda: Record<string, Record<string, Session[]>> = {
     auto: [{ title: "Debate", speakers: "Martha White · Clare Lyle · Junhyuk Oh · Sam Devlin · Théo Vincent · Michael Beukman", kind: "panel" }],
   },
   "2:30": {
-    crl: [{ title: "Contributed talks 5–6", speakers: "Ben Sanati · Keith Lawson" }], wm: [{ title: "Poster session", kind: "poster" }], big: [{ title: "Spotlight", speakers: "Aryaman Reddi" }],
+    crl: [
+      { title: "5. Forgetting is Everywhere", speakers: "Ben Sanati, Thomas L Lee, Trevor McInroe, Aidan Scannell, Nikolay Malkin, David Abel, Amos Storkey" },
+      { title: "6. Security-Gym: Evaluating Temporally-Uniform Agents on High-Fidelity Linux Telemetry", speakers: "Keith Lawson, Hafiz Malik" },
+    ], wm: [{ title: "Poster session", kind: "poster" }], big: [{ title: "Spotlight", speakers: "Aryaman Reddi" }],
     frame: [{ title: "Contributed oral presentations", speakers: "Esraa Elelimy · Banafsheh Rafiee · Fernando Rosas · Roy Fox" }],
   },
   "3:00": {
@@ -73,7 +81,10 @@ const agenda: Record<string, Record<string, Session[]>> = {
     frame: [{ title: "Human–Machine Co-creation", speakers: "Dylan Brenneis" }, { title: "Closing remarks" }], auto: [{ title: "Oral presentations" }],
   },
   "4:00": {
-    crl: [{ title: "Contributed talks 7–8", speakers: "Edan Meyer · Zijing Wu" }], wm: [{ title: "Closing remarks" }], frame: [{ title: "Poster session 2", kind: "poster" }], auto: [{ title: "Invited tutorial", speakers: "Antonin Raffin" }],
+    crl: [
+      { title: "7. Connectivity, Credit Assignment, and the Speed of Learning", speakers: "Edan Meyer, Andrew Freeman, Richard S. Sutton" },
+      { title: "8. QD-Learning for Continual Reinforcement Learning", speakers: "Zijing Wu, Doina Precup, Paul Masset, Nishanth Anand" },
+    ], wm: [{ title: "Closing remarks" }], frame: [{ title: "Poster session 2", kind: "poster" }], auto: [{ title: "Invited tutorial", speakers: "Antonin Raffin" }],
   },
   "4:30": { crl: [{ title: "Three Challenges of Continual RL", speakers: "A. Rupam Mahmood" }, { title: "Closing remarks" }], big: [{ title: "Closing remarks" }], auto: [{ title: "Closing remarks" }] },
   "5:00": {},
