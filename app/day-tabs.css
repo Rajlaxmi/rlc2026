@@ -1,0 +1,26 @@
+.day-tabs {
+  display: flex;
+  gap: 8px;
+  margin: -4px 0 14px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+.day-tabs button {
+  min-width: 132px;
+  border: 1px solid #cdd4cf;
+  background: #ffffff99;
+  border-radius: 12px;
+  padding: 10px 14px;
+  text-align: left;
+  color: var(--ink);
+  cursor: pointer;
+}
+.day-tabs b, .day-tabs span { display: block; }
+.day-tabs b { font-size: 13px; }
+.day-tabs span { font-size: 10px; color: #79827d; margin-top: 3px; text-transform: uppercase; letter-spacing: .08em; }
+.day-tabs button.selected { background: #22352d; border-color: #22352d; color: #fff; }
+.day-tabs button.selected span { color: #bfcac4; }
+@media (max-width: 760px) {
+  .day-tabs { margin-top: 0; }
+  .day-tabs button { min-width: 116px; }
+}

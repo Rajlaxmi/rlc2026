@@ -79,27 +79,69 @@ const agenda: Record<string, Record<string, Session[]>> = {
   "5:00": {},
 };
 
+const conferenceColumns: Workshop[] = [
+  { id: "main", short: "Main stage", name: "Keynotes & shared sessions", room: "B-2285", color: "#243b32", url: "https://rl-conference.cc/schedule.html" },
+  { id: "a", short: "Track A", name: "Track A", room: "B-2305", color: "#f0544f", url: "https://rl-conference.cc/schedule.html" },
+  { id: "b", short: "Track B", name: "Track B", room: "B-0325", color: "#5b5bd6", url: "https://rl-conference.cc/schedule.html" },
+  { id: "c", short: "Track C", name: "Track C", room: "B-2325", color: "#0f9d79", url: "https://rl-conference.cc/schedule.html" },
+  { id: "d", short: "Track D", name: "Track D", room: "B-0305", color: "#e89826", url: "https://rl-conference.cc/schedule.html" },
+];
+
+const dayData: Record<string, { label: string; date: string; times: string[]; agenda: Record<string, Record<string, Session[]>> }> = {
+  sunday: { label: "Sunday", date: "August 16", times: ["9:15", "9:30", "10:30", "11:00", "12:00", "1:00", "2:30", "4:00", "6:00"], agenda: {
+    "9:15": { main: [{ title: "Opening comments" }] }, "9:30": { main: [{ title: "Keynote", speakers: "Marc Bellemare" }] },
+    "10:30": { main: [{ title: "Coffee break", kind: "break" }] },
+    "11:00": { a: [{ title: "Theory of RL" }], b: [{ title: "Task specification + reward functions" }], c: [{ title: "Core RL algorithms" }], d: [{ title: "Evaluation, benchmarks + environments" }] },
+    "12:00": { main: [{ title: "Lunch · Room B-2294", kind: "break" }] }, "1:00": { main: [{ title: "Poster session · 31 posters", speakers: "Poster area", kind: "poster" }] },
+    "2:30": { main: [{ title: "Travel to Cirque du Soleil", speakers: "Quai Jacques-Cartier" }] }, "4:00": { main: [{ title: "Cirque du Soleil", speakers: "Quai Jacques-Cartier" }] },
+    "6:00": { main: [{ title: "Reception", speakers: "2 R. de la Commune O" }] },
+  }},
+  monday: { label: "Monday", date: "August 17", times: ["9:00", "10:00", "10:20", "11:10", "11:40", "12:30", "2:00", "3:00", "6:00"], agenda: {
+    "9:00": { main: [{ title: "Keynote", speakers: "Sheila McIlraith" }] }, "10:00": { main: [{ title: "Coffee break", kind: "break" }] },
+    "10:20": { a: [{ title: "Bandits" }], b: [{ title: "Fairness, interpretability + HAI · Hierarchical RL" }], c: [{ title: "Core RL algorithms" }], d: [{ title: "Applied RL" }] },
+    "11:10": { main: [{ title: "Queer in AI coffee · Room B-4315", kind: "break" }] },
+    "11:40": { a: [{ title: "Understanding deep RL" }], b: [{ title: "Task specification + reward functions" }], c: [{ title: "Planning + model-based RL" }], d: [{ title: "Multi-agent RL" }] },
+    "12:30": { main: [{ title: "WiML lunch", speakers: "Outside · B-4315 if rain", kind: "break" }] }, "2:00": { main: [{ title: "Keynote", speakers: "Danijar Hafner" }] },
+    "3:00": { main: [{ title: "Poster session · 60 posters", speakers: "Poster area", kind: "poster" }] }, "6:00": {},
+  }},
+  tuesday: { label: "Tuesday", date: "August 18", times: ["9:00", "10:00", "10:20", "11:10", "11:40", "12:30", "1:00", "2:00", "3:00", "6:00"], agenda: {
+    "9:00": { main: [{ title: "Keynote", speakers: "Rika Antonova" }] }, "10:00": { main: [{ title: "Coffee break", kind: "break" }] },
+    "10:20": { a: [{ title: "Theory of RL" }], b: [{ title: "Safe, robust + risk-sensitive RL" }], c: [{ title: "Offline RL" }], d: [{ title: "Evaluation, benchmarks + environments" }] },
+    "11:10": { main: [{ title: "Coffee break", kind: "break" }] },
+    "11:40": { a: [{ title: "Understanding deep RL" }], b: [{ title: "RL fine-tuning of LLMs/VLMs/VLAs · Imitation learning" }], c: [{ title: "Continual RL · Streaming RL · Exploration" }], d: [{ title: "Multi-agent RL" }] },
+    "12:30": { main: [{ title: "Lunch · Room B-2294", kind: "break" }] }, "1:00": { main: [{ title: "Town hall", speakers: "Salle Claude-Champagne", kind: "panel" }] },
+    "2:00": { main: [{ title: "Keynote", speakers: "Balaraman Ravindran" }] }, "3:00": { main: [{ title: "Poster session · 60 posters", speakers: "Poster area", kind: "poster" }] }, "6:00": {},
+  }},
+};
+
 export default function Home() {
+  const [day, setDay] = useState("saturday");
   const [query, setQuery] = useState("");
   const [compact, setCompact] = useState(false);
-  const visible = useMemo(() => workshops.filter(w => `${w.name} ${w.room}`.toLowerCase().includes(query.toLowerCase())), [query]);
+  const columns = day === "saturday" ? workshops : conferenceColumns;
+  const currentTimes = day === "saturday" ? times : dayData[day].times;
+  const currentAgenda = day === "saturday" ? agenda : dayData[day].agenda;
+  const visible = useMemo(() => columns.filter(w => `${w.name} ${w.room}`.toLowerCase().includes(query.toLowerCase())), [query, day]);
   return <main>
     <header className="hero">
-      <div className="eyebrow"><span className="live-dot" /> RLC 2026 · Workshop day</div>
-      <div className="hero-row"><div><h1>Workshop schedule</h1><p>Saturday, August 15 · Université de Montréal · 3200 Jean-Brillant</p></div><div className="date-tile"><b>15</b><span>AUG</span></div></div>
+      <div className="eyebrow"><span className="live-dot" /> RLC 2026 · Montréal</div>
+      <div className="hero-row"><div><h1>Conference schedule</h1><p>{day === "saturday" ? "Saturday, August 15 · Workshop day" : `${dayData[day].label}, ${dayData[day].date}`} · Université de Montréal</p></div><div className="date-tile"><b>{day === "saturday" ? "15" : dayData[day].date.split(" ")[1]}</b><span>AUG</span></div></div>
+      <nav className="day-tabs" aria-label="Conference day">
+        {[['saturday','Sat 15','Workshops'],['sunday','Sun 16','Conference'],['monday','Mon 17','Conference'],['tuesday','Tue 18','Conference']].map(([id,label,note]) => <button key={id} className={day===id?'selected':''} onClick={()=>{setDay(id);setQuery('')}}><b>{label}</b><span>{note}</span></button>)}
+      </nav>
       <div className="controls">
-        <label className="search"><span>⌕</span><input aria-label="Filter workshops" placeholder="Find a workshop or room…" value={query} onChange={e => setQuery(e.target.value)} /></label>
+        <label className="search"><span>⌕</span><input aria-label="Filter schedule columns" placeholder={day === "saturday" ? "Find a workshop or room…" : "Find a track or room…"} value={query} onChange={e => setQuery(e.target.value)} /></label>
         <button className={compact ? "active" : ""} onClick={() => setCompact(v => !v)} aria-pressed={compact}>Compact view</button>
         <a href="https://rl-conference.cc/schedule.html" target="_blank" rel="noreferrer">Official schedule ↗</a>
       </div>
     </header>
-    <section className="notice"><b>7 parallel workshops</b><span>Times shown in Montréal local time (EDT). Scroll sideways to compare every room.</span></section>
+    <section className="notice"><b>{day === "saturday" ? "7 parallel workshops" : "Conference program"}</b><span>Times shown in Montréal local time (EDT). Scroll sideways to compare every room.</span></section>
     <div className={`schedule-wrap ${compact ? "compact" : ""}`}><table><thead><tr>
       <th className="time-head"><span>TIME</span><small>EDT</small></th>
       {visible.map(w => <th key={w.id} style={{ "--accent": w.color } as React.CSSProperties}><a href={w.url} target="_blank" rel="noreferrer"><span className="workshop-name">{w.short}</span><span className="room">Room {w.room}</span></a></th>)}
-    </tr></thead><tbody>{times.map(time => <tr key={time}>
+    </tr></thead><tbody>{currentTimes.map(time => <tr key={time}>
       <th className="time-cell">{time}<small>{Number(time.split(":")[0]) < 8 ? "PM" : "AM"}</small></th>
-      {visible.map(w => <td key={w.id}>{(agenda[time]?.[w.id] || []).map((s, i) => <article key={i} className={`session ${s.kind || "talk"}`}><strong>{s.title}</strong>{s.speakers && <span>{s.speakers}</span>}</article>)}</td>)}
+      {visible.map(w => <td key={w.id}>{(currentAgenda[time]?.[w.id] || []).map((s, i) => <article key={i} className={`session ${s.kind || "talk"}`}><strong>{s.title}</strong>{s.speakers && <span>{s.speakers}</span>}</article>)}</td>)}
     </tr>)}</tbody></table></div>
     <footer><span>Agenda details are compiled from workshop organizers’ published pages and may change.</span><span>Last checked · Aug 15, 2026</span></footer>
   </main>;
