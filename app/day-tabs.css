@@ -30,6 +30,9 @@
 .speaker-name { display: block !important; margin: 0 !important; }
 .speaker-name > span { display: block; color: #52605a; }
 .speaker-name a { display: inline-block; margin-top: 2px; color: #376d58; font-size: 9px; font-weight: 800; text-decoration: underline; text-underline-offset: 2px; }
+.talk-details { margin-top: 8px; color: #747e79; }
+.talk-details p { margin: 0 0 8px; font-size: 10px; line-height: 1.4; font-weight: 400; }
+.talk-details p:last-child { margin-bottom: 0; }
 @media (max-width: 760px) {
   .day-tabs { margin-top: 0; }
   .day-tabs a { min-width: 116px; }

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-type Session = { title: string; speakers?: string; url?: string; kind?: "talk" | "break" | "poster" | "panel" | "pending" };
+type Session = { title: string; speakers?: string; details?: string[]; url?: string; kind?: "talk" | "break" | "poster" | "panel" | "pending" };
 type Workshop = { id: string; short: string; name: string; room: string; color: string; url: string };
 
 const workshops: Workshop[] = [
@@ -38,12 +38,12 @@ const agenda: Record<string, Record<string, Session[]>> = {
     big: [{ title: "Posters + coffee", kind: "poster" }], frame: [{ title: "Coffee break", kind: "break" }], auto: [{ title: "Coffee break", kind: "break" }],
   },
   "10:30": {
-    crl: [
-      { title: "1. The Three Regimes of Offline-to-Online Reinforcement Learning", speakers: "Lu Li, Tianwei Ni, Yihao Sun, Pierre-Luc Bacon" },
-      { title: "2. Task diversity produces systematic transfer but inhibits continual reinforcement learning", speakers: "Purab Seth, Neil Shah, Kunal Jha, Samuel J. Gershman, Max Kleiman-Weiner, Wilka Carvalho" },
-      { title: "3. Flow-Corrected Thompson Sampling for Non-Stationary Contextual Bandits", speakers: "AmirHossein Naghdi, Ali Baheri" },
-      { title: "4. Calibrated Partial Resets: Preventing Policy Collapse in Continual Reinforcement Learning", speakers: "Luc McCutcheon, Evangelos Chatzaroulas, Saber Fallah" },
-    ],
+    crl: [{ title: "Contributed Talks (1–4)", details: [
+      "1. The Three Regimes of Offline-to-Online Reinforcement Learning — Lu Li, Tianwei Ni, Yihao Sun, Pierre-Luc Bacon",
+      "2. Task diversity produces systematic transfer but inhibits continual reinforcement learning — Purab Seth, Neil Shah, Kunal Jha, Samuel J. Gershman, Max Kleiman-Weiner, Wilka Carvalho",
+      "3. Flow-Corrected Thompson Sampling for Non-Stationary Contextual Bandits — AmirHossein Naghdi, Ali Baheri",
+      "4. Calibrated Partial Resets: Preventing Policy Collapse in Continual Reinforcement Learning — Luc McCutcheon, Evangelos Chatzaroulas, Saber Fallah",
+    ] }],
     wm: [{ title: "Invited talk", speakers: "Danijar Hafner" }],
     big: [{ title: "Lightning talk: RL on Robots", speakers: "Sorina Lupu" }],
     frame: [{ title: "Panel with invited speakers", speakers: "Özgür Şimşek · Serena Booth · Sara Aronowitz · Joel Lehman", kind: "panel" }],
@@ -65,10 +65,10 @@ const agenda: Record<string, Record<string, Session[]>> = {
     auto: [{ title: "Debate", speakers: "Martha White · Clare Lyle · Junhyuk Oh · Sam Devlin · Théo Vincent · Michael Beukman", kind: "panel" }],
   },
   "2:30": {
-    crl: [
-      { title: "5. Forgetting is Everywhere", speakers: "Ben Sanati, Thomas L Lee, Trevor McInroe, Aidan Scannell, Nikolay Malkin, David Abel, Amos Storkey" },
-      { title: "6. Security-Gym: Evaluating Temporally-Uniform Agents on High-Fidelity Linux Telemetry", speakers: "Keith Lawson, Hafiz Malik" },
-    ], wm: [{ title: "Poster session", kind: "poster" }], big: [{ title: "Spotlight", speakers: "Aryaman Reddi" }],
+    crl: [{ title: "Contributed Talks (5–6)", details: [
+      "5. Forgetting is Everywhere — Ben Sanati, Thomas L Lee, Trevor McInroe, Aidan Scannell, Nikolay Malkin, David Abel, Amos Storkey",
+      "6. Security-Gym: Evaluating Temporally-Uniform Agents on High-Fidelity Linux Telemetry — Keith Lawson, Hafiz Malik",
+    ] }], wm: [{ title: "Poster session", kind: "poster" }], big: [{ title: "Spotlight", speakers: "Aryaman Reddi" }],
     frame: [{ title: "Contributed oral presentations", speakers: "Esraa Elelimy · Banafsheh Rafiee · Fernando Rosas · Roy Fox" }],
   },
   "3:00": {
@@ -81,10 +81,10 @@ const agenda: Record<string, Record<string, Session[]>> = {
     frame: [{ title: "Human–Machine Co-creation", speakers: "Dylan Brenneis" }, { title: "Closing remarks" }], auto: [{ title: "Oral presentations" }],
   },
   "4:00": {
-    crl: [
-      { title: "7. Connectivity, Credit Assignment, and the Speed of Learning", speakers: "Edan Meyer, Andrew Freeman, Richard S. Sutton" },
-      { title: "8. QD-Learning for Continual Reinforcement Learning", speakers: "Zijing Wu, Doina Precup, Paul Masset, Nishanth Anand" },
-    ], wm: [{ title: "Closing remarks" }], frame: [{ title: "Poster session 2", kind: "poster" }], auto: [{ title: "Invited tutorial", speakers: "Antonin Raffin" }],
+    crl: [{ title: "Contributed Talks (7–8)", details: [
+      "7. Connectivity, Credit Assignment, and the Speed of Learning — Edan Meyer, Andrew Freeman, Richard S. Sutton",
+      "8. QD-Learning for Continual Reinforcement Learning — Zijing Wu, Doina Precup, Paul Masset, Nishanth Anand",
+    ] }], wm: [{ title: "Closing remarks" }], frame: [{ title: "Poster session 2", kind: "poster" }], auto: [{ title: "Invited tutorial", speakers: "Antonin Raffin" }],
   },
   "4:30": { crl: [{ title: "Three Challenges of Continual RL", speakers: "A. Rupam Mahmood" }, { title: "Closing remarks" }], big: [{ title: "Closing remarks" }], auto: [{ title: "Closing remarks" }] },
   "5:00": {},
@@ -174,7 +174,7 @@ export default function SchedulePage({ initialDay }: { initialDay: string }) {
       {visible.map(w => <th key={w.id} style={{ "--accent": w.color } as React.CSSProperties}><a href={w.url} target="_blank" rel="noreferrer"><span className="workshop-name">{w.short}</span><span className="room">Room {w.room}</span></a></th>)}
     </tr></thead><tbody>{currentTimes.map(time => <tr key={time}>
       <th className="time-cell">{time}<small>{Number(time.split(":")[0]) < 8 ? "PM" : "AM"}</small></th>
-      {visible.map(w => <td key={w.id}>{(currentAgenda[time]?.[w.id] || []).map((s, i) => <article key={i} className={`session ${s.kind || "talk"}`}><strong><a className="source-link" href={s.url || w.url} target="_blank" rel="noreferrer" aria-label={`${s.title} — open original schedule`}>{s.title}<i aria-hidden="true">↗</i></a></strong>{s.speakers && <SpeakerNames text={s.speakers} />}</article>)}</td>)}
+      {visible.map(w => <td key={w.id}>{(currentAgenda[time]?.[w.id] || []).map((s, i) => <article key={i} className={`session ${s.kind || "talk"}`}><strong><a className="source-link" href={s.url || w.url} target="_blank" rel="noreferrer" aria-label={`${s.title} — open original schedule`}>{s.title}<i aria-hidden="true">↗</i></a></strong>{s.details && <div className="talk-details">{s.details.map(detail => <p key={detail}>{detail}</p>)}</div>}{s.speakers && <SpeakerNames text={s.speakers} />}</article>)}</td>)}
     </tr>)}</tbody></table></div>
     <footer><span>Agenda details are compiled from workshop organizers’ published pages and may change.</span><span>Last checked · Aug 15, 2026</span></footer>
   </main>;
